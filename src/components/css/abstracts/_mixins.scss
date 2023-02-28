@@ -1,0 +1,5 @@
+@mixin planet-shadow($size){
+    $color: rgb(41, 6, 70);
+    box-shadow: inset $size*4 0px $size*8 $size*2 rgba($color, 0.7), inset $size*1 0px $size*3 $size*1 rgba($color, 0.7),
+    -$size*2 0px $size*4 rgba($color, 0.8);
+}

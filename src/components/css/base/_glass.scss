@@ -1,0 +1,31 @@
+.glass{
+    background-color: rgba(0, 153, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    
+    &__screen{
+        width: 90%;
+        height: 90vh;
+    
+        border-radius: 1rem;
+        padding: 2rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+
+
+    }
+
+
+    &__text{
+        
+        // height: 10rem;
+    }
+
+    &__btn{
+
+    }
+}

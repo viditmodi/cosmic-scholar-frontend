@@ -1,0 +1,202 @@
+.planet {
+  aspect-ratio: 1;
+  border-radius: 500rem;
+  background-size: cover;
+  background-position: 0% 0%;
+  background-repeat: repeat;
+  @include planet-shadow(5px);
+  perspective: 3000px;
+  //   z-index: 0;
+  transform-style: preserve-3d;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  &__moon {
+      width: 20%;
+      aspect-ratio: 1;
+      border-radius: 500rem;
+      position: absolute;
+      background-image: url(https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_1k.jpg);
+      background-size: cover;
+      background-repeat: repeat;
+      @include planet-shadow(1.5px);
+      
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      cursor: pointer;
+      &:hover{
+        animation-play-state: paused;
+      }
+      
+    &--1 {
+        top: 40%;
+        right: -35%;
+        animation: moon-move--1 20s ease-in-out infinite,
+        bg-planet-move 20s linear infinite reverse;
+    }
+    &--2 {
+        top: -20%;
+        right: -20%;
+        animation: moon-move--2 20s ease-in-out infinite,
+        bg-planet-move 20s linear infinite reverse;
+    }
+    &--3 {
+        top: -35%;
+        right: 40%;
+        animation: moon-move--3 20s ease-in-out infinite,
+        bg-planet-move 20s linear infinite reverse;
+    }
+    &--4 {
+        top: -20%;
+        left: -20%;
+        animation: moon-move--4 20s ease-in-out infinite,
+        bg-planet-move 20s linear infinite reverse;
+    }
+  }
+
+  &--venus {
+    animation: bg-planet-move 20s linear infinite;
+  }
+  &--mars {
+    animation: bg-planet-move 30s linear infinite;
+  }
+}
+
+@keyframes moon-move--1 {
+  0% {
+    top: 40%;
+    right: -35%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+  25% {
+    transform: perspective(3000px) translateZ(40rem);
+  }
+  50% {
+    top: 40%;
+    right: 115%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+  51% {
+    top: 40%;
+    right: 115%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+  75% {
+    transform: perspective(3000px) translateZ(-40rem);
+  }
+  100% {
+    top: 40%;
+    right: -35%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+}
+@keyframes moon-move--2 {
+  0% {
+    top: -20%;
+    right: -20%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+  25% {
+    transform: perspective(3000px) translateZ(40rem);
+  }
+  50% {
+    top: 100%;
+    right: 100%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+  51% {
+    top: 100%;
+    right: 100%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+  75% {
+    transform: perspective(3000px) translateZ(-40rem);
+  }
+  100% {
+    top: -20%;
+    right: -20%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+}
+@keyframes moon-move--3 {
+  0% {
+    top: -35%;
+    right: 40%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+  25% {
+    transform: perspective(3000px) translateZ(40rem);
+  }
+  50% {
+    top: 115%;
+    right: 40%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+  51% {
+    top: 115%;
+    right: 40%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+  75% {
+    transform: perspective(3000px) translateZ(-40rem);
+  }
+  100% {
+    top: -35%;
+    right: 40%;
+    transform: perspective(3000px) translateZ(0rem);
+  }
+}
+@keyframes moon-move--4 {
+    0% {
+      top: -20%;
+      left: -20%;
+      transform: perspective(3000px) translateZ(0rem);
+    }
+    25% {
+      transform: perspective(3000px) translateZ(40rem);
+    }
+    50% {
+      top: 100%;
+      left: 100%;
+      transform: perspective(3000px) translateZ(0rem);
+    }
+    51% {
+      top: 100%;
+      left: 100%;
+      transform: perspective(3000px) translateZ(0rem);
+    }
+    75% {
+      transform: perspective(3000px) translateZ(-40rem);
+    }
+    100% {
+      top: -20%;
+      left: -20%;
+      transform: perspective(3000px) translateZ(0rem);
+    }
+  }
+
+
+
+
+.asteroid{
+    width: 98.56px;
+    aspect-ratio: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-size: cover;
+    background-position: 0% center;
+    animation: asteroid 5s steps(32) infinite;
+
+    // background-color: aqua;
+}
+
+@keyframes asteroid{
+    from{
+        background-position: 3125px center;
+    }
+}

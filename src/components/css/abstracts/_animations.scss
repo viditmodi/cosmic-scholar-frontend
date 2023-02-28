@@ -1,0 +1,25 @@
+@keyframes bg-space-move{
+    from{
+        background-position: 720px 360px;
+        // background-position: -100% -100%;
+    }
+}
+
+
+// @keyframes bg-planet-move{
+//     from{
+//         // background-position: 1041px 0px;
+//         background-position: 100% 0px;
+//         // background-position: 1200px 0px;
+//     }
+// }
+@keyframes bg-planet-move{
+    from{
+        background-position: 0% 0%;
+    }
+    to{
+        background-position: 200% 0%;
+    }
+}
+
+
