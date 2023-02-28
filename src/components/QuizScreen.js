@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { fetchQuestion } from './js/fetchQuestion'
+import { sleep } from './js/sleep'
 
 function QuizScreen() {
     const [question, setQuestion]= useState({})
     const [chosenAnswer, setChosenAnswer]= useState("")
-    // useEffect(,[])
-    const startQuiz = ()=>{
+    const answerRef = useRef(chosenAnswer)
+    answerRef.current = chosenAnswer;
+
+    const startQuiz = async ()=>{
             // setQuestionFormat   
-            setInterval(setQuestionFormat, 10000)
+        await sleep(5000)
+            setQuestionFormat()
         }
+
+
+        // const test=async ()=>{
+        //     await sleep(5000);
+        //     console.log("object")
+        // }
     const setQuestionFormat = async ()=>{
         let optionElements = document.getElementsByClassName('quiz__option')
 
@@ -43,12 +53,18 @@ function QuizScreen() {
         // console.log(question_format)
         setQuestion(question_format)
 
+        await sleep(10000)
         // setTimeout(checkAnswer, 8000, question_format.correct, question_format)
+        console.log(chosenAnswer)
+        checkAnswer(question_format.correct, question_format)
+        await sleep(2000)
+        setQuestionFormat()
     }
 
     const checkAnswer = (correct, question)=>{
-        const given = chosenAnswer
-        console.log(given)
+        const given = answerRef.current
+        console.log(answerRef.current)
+        console.log("given---", given)
         console.log(correct)
         const correct_index = question.options.indexOf(correct)
         const chosen_index = question.options.indexOf(given)
@@ -59,12 +75,26 @@ function QuizScreen() {
         }else{
             console.log("incorrect")
             optionsElements[correct_index].classList.add('quiz__option--correct')
+            if(chosen_index>=0){
             optionsElements[chosen_index].classList.add('quiz__option--incorrect')
+            }
         }
     }
 
 
     const setAnswer= (option)=>{
+        let optionElements = document.getElementsByClassName('quiz__option')
+        for(let i=0; i<question.options.length; i++){
+            if(question.options[i]===option){
+                console.log(i)
+                optionElements[i].classList.add('quiz__option--selected')
+                continue
+            }
+            
+            optionElements[i].classList.remove('quiz__option--selected')
+        }
+        
+        console.log(option)
         setChosenAnswer(option)
     }
   return (
@@ -74,12 +104,12 @@ function QuizScreen() {
       {/* {JSON.stringify(question)} */}
       <div className="glass__screen ">
             <p className="glass glass__text quiz__question">{question.question}</p>
-            {/* <p className="glass glass__text quiz__question">{chosenAnswer}</p> */}
+            <p className="glass glass__text quiz__question">{chosenAnswer}</p>
 
             <div className="quiz__options">
                 {question.options?.map(option=>{
                     return(
-                        <button className="glass glass__btn quiz__option" onClick={setAnswer}>{option}</button>
+                        <button className="glass glass__btn quiz__option" onClick={()=>{setAnswer(option)}}>{option}</button>
                     )
                 })}
                 
