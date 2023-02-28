@@ -18,6 +18,7 @@ function App() {
       UserData.setUserData(savedUserData)
       UserData.setAuthToken(savedAuthToken)
     }
+    // eslint-disable-next-line
   },[])
   
   return (

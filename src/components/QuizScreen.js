@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { fetchQuestion } from './js/fetchQuestion'
 import { sleep } from './js/sleep'
 
@@ -35,7 +35,7 @@ function QuizScreen() {
         const arr = "abcdef".split("")
         let options=[]
         let correct_option
-        arr.map((item, index)=>{
+        arr.map((item)=>{
             const option = question.answers['answer_'+item]
             if(option){
                 options.push(option)
@@ -44,6 +44,7 @@ function QuizScreen() {
             if(correct==='true'){
                 correct_option = option
             }
+            return(null)
         })
         const question_format = {
             question: question.question,
@@ -104,7 +105,7 @@ function QuizScreen() {
       {/* {JSON.stringify(question)} */}
       <div className="glass__screen ">
             <p className="glass glass__text quiz__question">{question.question}</p>
-            <p className="glass glass__text quiz__question">{chosenAnswer}</p>
+            {/* <p className="glass glass__text quiz__question">{chosenAnswer}</p> */}
 
             <div className="quiz__options">
                 {question.options?.map(option=>{

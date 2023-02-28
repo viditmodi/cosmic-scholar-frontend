@@ -179,6 +179,7 @@ function HomePage(props) {
             default:
                 break;
         }
+        // eslint-disable-next-line
     },[props.type])
   return (
     <div className="home">
