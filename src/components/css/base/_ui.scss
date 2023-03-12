@@ -1,14 +1,81 @@
 .ui{
 
+    &__bg{
+        // $color: rgb(55, 55, 185, 1);
+        $color: var(--color);
+        $color-light-10: var(--color-light-10);
+        $color-light-20: var(--color-light-20);
+        $color-dark-10: var(--color-dark-10);
+        $color-dark-20: var(--color-dark-20);
+        // width: 100%;
+        // aspect-ratio: 1;
+        position: relative;
+        z-index: -2;
+        border-radius: 25%;
+        // background-color: aqua;
+        
+        backdrop-filter: blur(20px);
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.15), inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+        
+        background-image: conic-gradient(
+          $color-light-10 30deg,
+          $color 30deg 60deg,
+          $color-dark-10 60deg 120deg,
+          $color-dark-20 120deg 150deg,
+          $color-dark-10 150deg 210deg,
+          $color 210deg 240deg,
+          $color-light-10 240deg 300deg,
+          $color-light-20 300deg 330deg,
+          $color-light-10 330deg 360deg
+        );
+    
+        &::before {
+            //   border: 1px solid rgb(99, 99, 255);
+            // backdrop-filter: blur(20px);
+          content: " ";
+          width: 75%;
+          aspect-ratio: 1;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          translate: -50% -50%;
+          background-color: $color;
+          border-radius: 25%;
+          z-index: -1;
+          box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.15), inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+
+
+        &--blue{
+            --color: hsl(214, 100%, 50%);
+            --color-light-10: hsl(214, 100%, 60%);
+            --color-light-20: hsl(214, 100%, 70%);
+            --color-dark-10: hsl(214, 100%, 40%);
+            --color-dark-20: hsl(214, 100%, 30%);
+        }
+        &--yellow{
+            --color: hsl(41, 100%, 50%);
+            --color-light-10: hsl(41, 100%, 60%);
+            --color-light-20: hsl(41, 100%, 70%);
+            --color-dark-10: hsl(41, 100%, 40%);
+            --color-dark-20: hsl(41, 100%, 30%);
+        }
+    
+    }
 
 
     &__btn{
-        padding: 1.5rem 2.5rem;
+        padding: 1rem 2rem;
         border-radius: 20%;
         outline: transparent;
         border: none;
-        // border: 0.4rem solid;
-        box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.568), inset -2px -2px 5px rgba(0, 0, 0, 0.568);
+        border: 0.2rem solid;
+        // box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.568), inset -2px -2px 5px rgba(0, 0, 0, 0.568);
         position: relative;
         text-transform: uppercase;
 
@@ -26,9 +93,9 @@
         }
 
         &--blue{
-            background-image: radial-gradient(circle, rgb(0, 60, 255), rgb(0, 153, 255));
-            // border-color: rgb(0, 21, 88);
-            color: white;
+            background-image: linear-gradient(to top, rgb(0, 60, 255), rgb(0, 153, 255));
+            border-color: rgb(53, 117, 255);
+            color: rgb(170, 209, 255);
         }
     }
 }

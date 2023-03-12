@@ -1,0 +1,121 @@
+.popup{
+    width: 100%;
+    height: 100vh;
+
+    background-color: rgba(12, 12, 12, 0.7);
+    position: absolute;
+    top: 0%;
+    left: 0%;
+
+    
+    
+    &__screen{
+        width: 90%;
+        max-width: 60rem;
+        height: 90%;
+        padding: 2rem 4rem;
+        background-color: rgba($color-hologram, 0.25);
+        backdrop-filter: blur(10px);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        animation: show-screen 0.3s linear;
+
+        $color-border: lighten($color-hologram, 10);
+        border-radius: 10%/100%;
+        border: 10px solid;
+        border-color: $color-border;
+        outline: 5px solid;
+        outline-color: $color-border;
+        outline-offset: 1rem;
+        box-shadow: inset 0px 0px 6px $color-border,inset 0px 0px 15px $color-border, 0px 0px 15px $color-border, 0px 0px 30px $color-border, 0px 0px 40px $color-border;
+    }
+
+    &__close-btn{
+        width: 7%;
+        max-width: 4rem;
+        aspect-ratio: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0rem;
+        right: 0rem;
+        border-radius: 1rem;
+        border-top-right-radius: 0px;
+        outline: transparent;
+        border: none;
+        cursor: pointer;
+        background-color: $color-hologram;
+    }
+
+    &__child{
+        overflow-y: scroll;
+        position: relative;
+        padding: 1rem;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &::-webkit-scrollbar{
+            width: 0.4rem;
+            // background-color: antiquewhite;
+        }
+        &::-webkit-scrollbar-thumb{
+            border-radius: 50rem;
+            background-color: rgb(0, 128, 128);
+        }
+        &::-webkit-scrollbar-track{
+            // width: 0.3rem;
+            // background-color: rgb(0, 0, 0);
+        }
+    }
+
+    &__text{
+        width: 95%;
+        height: fit-content;
+        color: lighten($color-hologram, 20);
+        text-shadow: 0px 0px 3px lighten($color-hologram, 30), 0px 0px 10px lighten($color-hologram, 30);
+        letter-spacing: 0.5px;
+        line-height: 2rem;
+        text-align: justify;
+        margin: 0.5rem;
+        font-family: $font-space-mono;
+        line-height: 2.2rem;
+
+    }
+
+    &__textbox{
+        width: 90%;
+        padding: 1rem 1.5rem;
+        background-color: transparent;
+        border-radius: 0.5rem;
+        outline: transparent;
+        border: 2px solid;
+        $color-border: darken($color-hologram, 10);
+        border-image: linear-gradient(to right bottom, $color-border, transparent,$color-border) 1%;
+        color: $color-hologram;
+        margin: 0.5rem 0rem 1rem;
+
+        transition: 0.3s linear;
+        
+        &::placeholder{
+            text-transform: capitalize;
+            opacity: 0.3;
+            color: $color-hologram;
+            transition: 0.15s linear;
+        }
+        
+        &:hover{
+            &::placeholder{
+                opacity: 0.7;
+            }
+        }
+        &:focus{
+            border-image: linear-gradient(to bottom left, $color-border, transparent,$color-border) 1%;
+        }
+    }
+}

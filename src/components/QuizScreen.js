@@ -1,124 +1,172 @@
-import React, { useRef, useState } from 'react'
-import { fetchQuestion } from './js/fetchQuestion'
-import { sleep } from './js/sleep'
+import axios from "axios";
+import React, { useContext, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import UserDataContext from "../context/UserDataContext";
+// import { fetchQuestion } from "./js/fetchQuestion";
+import { sleep } from "./js/sleep";
+import Timer from "./Timer";
 
-function QuizScreen() {
-    const [question, setQuestion]= useState({})
-    const [chosenAnswer, setChosenAnswer]= useState("")
-    const answerRef = useRef(chosenAnswer)
-    answerRef.current = chosenAnswer;
+function QuizScreen(props) {
+  // const [questionArray, setQuestionArray]= useState([])
+  // const navigate = useNavigate()
+  const UserContext = useContext(UserDataContext)
+  const { category, difficulty } = useParams();
 
-    const startQuiz = async ()=>{
-            // setQuestionFormat   
-        await sleep(5000)
-            setQuestionFormat()
-        }
+  
+  const [chosenAnswer, setChosenAnswer] = useState("");
+  const answerRef = useRef(chosenAnswer);
+  answerRef.current = chosenAnswer;
+
+  const [exp, setExp] = useState(0)
+  const expRef = useRef(exp);
+  expRef.current = exp;
 
 
-        // const test=async ()=>{
-        //     await sleep(5000);
-        //     console.log("object")
+  const [question, setQuestion] = useState({});
+  const [showQuizScreen, setShowQuizScreen] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
+  const [time, setTime] = useState(0);
+
+
+  const startQuiz = async () => {
+    const q = await getQuestions();
+    const t = 5;
+    setTime(t)
+    setShowTimer(true)
+    await sleep(5000);
+    setShowTimer(false)
+    await sleep(500)
+    setShowQuizScreen(true)
+    handleQuiz(q, 0);
+  };
+  
+
+  const resetOptions = () => {
+    let optionElements = document.getElementsByClassName("quiz__option");
+
+    if (optionElements.length > 0) {
+      for (let i = 0; i < optionElements.length; i++) {
+        optionElements[i].classList.remove("quiz__option--incorrect");
+        optionElements[i].classList.remove("quiz__option--correct");
+        optionElements[i].classList.remove("quiz__option--selected");
+      }
+    }
+  };
+  const getQuestions = async () => {
+    let question_format = await axios.get(
+      process.env.REACT_APP_SIS_API_URL +
+        `/question/quiz-api?category=${category}&difficulty=${difficulty}&limit=2`
+    );
+    question_format = question_format.data;
+    return question_format;
+  };
+
+  const handleQuiz = async (questionArray, questionIndex) => {
+    const t = props.questionTime;
+    setTime(t)
+    setShowTimer(true)
+    resetOptions();
+    if (questionIndex >= questionArray.length) {
+      console.log("end");
+      setShowTimer(false)
+      try {
+        const response = await axios.put(process.env.REACT_APP_SIS_API_URL+`/account/exp/${UserContext.userData.username}`, {gainedExp: expRef.current})
+
+        // if(response.data.status){
+          UserContext.setUserData(response.data.data)
+          localStorage.setItem("sis_user_data", JSON.stringify(response.data.data))
+          console.log(response)
+          console.log("response")
+          // navigate('/dashboard')
+
         // }
-    const setQuestionFormat = async ()=>{
-        let optionElements = document.getElementsByClassName('quiz__option')
-
-        if(optionElements.length>0){
-            for(let i=0; i<optionElements.length; i++){
-                optionElements[i].classList.remove('quiz__option--incorrect')
-                optionElements[i].classList.remove('quiz__option--correct')
-                optionElements[i].classList.remove('quiz__option--selected')
-            }
-        }
-        let question = await fetchQuestion()
-        question = question[0];
-
-        const arr = "abcdef".split("")
-        let options=[]
-        let correct_option
-        arr.map((item)=>{
-            const option = question.answers['answer_'+item]
-            if(option){
-                options.push(option)
-            }
-            const correct = question.correct_answers['answer_'+item+"_correct"]
-            if(correct==='true'){
-                correct_option = option
-            }
-            return(null)
-        })
-        const question_format = {
-            question: question.question,
-            options: options,
-            correct: correct_option
-        }
-        // console.log(question_format)
-        setQuestion(question_format)
-
-        await sleep(10000)
-        // setTimeout(checkAnswer, 8000, question_format.correct, question_format)
-        console.log(chosenAnswer)
-        checkAnswer(question_format.correct, question_format)
-        await sleep(2000)
-        setQuestionFormat()
-    }
-
-    const checkAnswer = (correct, question)=>{
-        const given = answerRef.current
-        console.log(answerRef.current)
-        console.log("given---", given)
-        console.log(correct)
-        const correct_index = question.options.indexOf(correct)
-        const chosen_index = question.options.indexOf(given)
-        let optionsElements = document.getElementsByClassName('quiz__option')
-        if(given===correct){
-            console.log("correct")
-            optionsElements[correct_index].classList.add('quiz__option--correct')
-        }else{
-            console.log("incorrect")
-            optionsElements[correct_index].classList.add('quiz__option--correct')
-            if(chosen_index>=0){
-            optionsElements[chosen_index].classList.add('quiz__option--incorrect')
-            }
-        }
-    }
-
-
-    const setAnswer= (option)=>{
-        let optionElements = document.getElementsByClassName('quiz__option')
-        for(let i=0; i<question.options.length; i++){
-            if(question.options[i]===option){
-                console.log(i)
-                optionElements[i].classList.add('quiz__option--selected')
-                continue
-            }
-            
-            optionElements[i].classList.remove('quiz__option--selected')
-        }
         
-        console.log(option)
-        setChosenAnswer(option)
+      } catch (error) {
+        console.log(error)
+      }
+    //   console.log(exp)
+    setShowQuizScreen(false)
+      console.log(expRef.current)
+      return;
     }
+    setQuestion(questionArray[questionIndex]);
+    await sleep(props.questionTime*1000);
+    checkAnswer(questionArray[questionIndex]);
+    setShowTimer(false)
+    await sleep(2000);
+
+    handleQuiz(questionArray, questionIndex + 1);
+  };
+
+  const checkAnswer = (question) => {
+    const given = answerRef.current;
+    // console.log(answerRef.current);
+    // console.log("exp---", exp);
+    // console.log(correct);
+    const correct_index = question.correct_answer.index;
+    const chosen_index = question.options.indexOf(given);
+    let optionsElements = document.getElementsByClassName("quiz__option");
+    if (given === question.correct_answer.value) {
+      console.log("correct");
+    //   console.log(question.exp);
+      setExp(prevState => prevState  + question.exp)
+      optionsElements[correct_index].classList.add("quiz__option--correct");
+
+    } else {
+      console.log("incorrect");
+      optionsElements[correct_index].classList.add("quiz__option--correct");
+      if (chosen_index >= 0) {
+        optionsElements[chosen_index].classList.add("quiz__option--incorrect");
+      }
+    }
+  };
+
+  const setAnswer = (option) => {
+    let optionElements = document.getElementsByClassName("quiz__option");
+    for (let i = 0; i < question.options.length; i++) {
+      if (question.options[i] === option) {
+        // console.log(i)
+        optionElements[i].classList.add("quiz__option--selected");
+        continue;
+      }
+
+      optionElements[i].classList.remove("quiz__option--selected");
+    }
+
+    // console.log(option);
+    setChosenAnswer(option);
+  };
+
+
+
   return (
-    <div>
-
-        <button onClick={startQuiz}>get</button>
+    <div className="popup__child">
+      {/* {console.log(UserContext.userData.username)} */}
+      {!showQuizScreen && <button className="btn btn--3d ui__btn ui__btn--blue" onClick={startQuiz}>start quiz</button>}
+        {showTimer && <Timer time={time}></Timer>}
       {/* {JSON.stringify(question)} */}
-      <div className="glass__screen ">
-            <p className="glass glass__text quiz__question">{question.question}</p>
-            {/* <p className="glass glass__text quiz__question">{chosenAnswer}</p> */}
+      {showQuizScreen && <div className="glass glass--white quiz">
+        <p className="glass__text quiz__question">{question.question}</p>
+        {/* <p className="glass glass__text quiz__question">{chosenAnswer}</p> */}
 
-            <div className="quiz__options">
-                {question.options?.map(option=>{
-                    return(
-                        <button className="glass glass__btn quiz__option" onClick={()=>{setAnswer(option)}}>{option}</button>
-                    )
-                })}
-                
-            </div>
-            <button onClick={()=>{checkAnswer(question.correct, question)}}>next</button>
-      </div>
+        <div className="quiz__options">
+          {question.options?.map((option) => {
+            return (
+              <button
+                className=" quiz__option"
+                onClick={() => {
+                  setAnswer(option);
+                }}
+              >
+                {option}
+              </button>
+            );
+          })}
+        </div>
+        {/* {exp} */}
+      </div>}
     </div>
-  )
+  );
 }
 
-export default QuizScreen
+export default QuizScreen;

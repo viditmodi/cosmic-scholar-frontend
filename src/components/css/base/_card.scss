@@ -5,15 +5,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     gap: 1rem;
-    border-radius: 1rem;
-    border: 1px solid aqua;
+    // border-radius: 1rem;
+    // border: 1px solid aqua;
 
 
     &__image{
         width: 80%;
         aspect-ratio: 1;
-        background-color: aqua;
+        // background-color: white;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        // background-blend-mode: overlay;
+        // mix-blend-mode: color-burn;
     }
 }

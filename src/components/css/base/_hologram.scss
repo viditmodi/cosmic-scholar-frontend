@@ -2,30 +2,31 @@
 
 
     &__screen{
-        $alpha: 0.7;
-        background-image: linear-gradient(to bottom right, rgba(darken($color-hologram,0), $alpha), rgba(lighten($color-hologram,10), $alpha));
         padding: 2.5rem;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%) scale(1);
-        backdrop-filter: blur(10px);
-        outline: 6px solid rgba(lighten($color-hologram,30), $alpha);
+        outline: 6px solid rgba(lighten($color-hologram,30), 0.7);
         outline-offset: -1.5rem;
         outline-style: double;
-        border-radius: 1rem;
-        overflow: hidden;
+        overflow-y: scroll;
         animation: show-screen 0.3s linear;
         display: flex;
         flex-direction: column;
         align-items: center;
+
+
+        &::-webkit-scrollbar{
+            display: none;
+        }
     }
 
     &__btn-hide{
         position: absolute;
         right: 0rem;
         top: 0rem;
-        background-color: $color-hologram;
+        background-color: rgba($color-hologram, 0.9);
         width: 10%;
         aspect-ratio: 1;
         max-width: 4rem;
@@ -55,22 +56,25 @@
     }
 
     &__text{
-        width: 95%;
+        width: 90%;
         height: fit-content;
-        color: aqua;
+        color: lighten($color-hologram, 50);
+        letter-spacing: 0.5px;
+        line-height: 2rem;
+        text-align: justify;
         margin: 0.5rem;
     }
 
     &__textbox{
         width: 90%;
-        padding: 0.8rem 1.5rem;
+        padding: 1rem 1.5rem;
         margin: 0.5rem 0rem 1.5rem;
         background-color: transparent;
         border: 2px solid transparent;
-        box-shadow: inset 1px 1px 3px rgb(85, 85, 255), inset -1px -1px 3px rgb(0, 0, 138);
+        box-shadow: inset 1px 1px 3px rgb(103, 103, 255), inset -1px -1px 3px rgb(0, 64, 202);
         outline: transparent;
         border-radius: 0.5rem;
-        transition: 0.1s linear;
+        transition: 0.2s linear;
         color: aqua;
         animation: textbox-visible 0.5s ease-in-out;
 
@@ -109,11 +113,3 @@
 
 
 
-@keyframes show-screen{
-    from{
-        transform: translate(-50%, -50%) scale(0);
-    }
-    to{
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
